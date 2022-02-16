@@ -50,8 +50,23 @@ func draw_snake():
 			if tail_direction == 'bottom':
 				$Grid.set_cell(tile.x, tile.y, SNAKE, false, false, false, Vector2(1,2))
 		else:
-			$Grid.set_cell(tile.x, tile.y, SNAKE, false,false,true, Vector2(2,2))
-
+			var previous_tile = snake_body[index_tile + 1] - tile
+			var next_tile = snake_body[index_tile - 1] - tile
+			
+			if previous_tile.x == next_tile.x:
+				$Grid.set_cell(tile.x, tile.y, SNAKE, false,false,false, Vector2(2,2))
+			elif previous_tile.y == next_tile.y:
+				$Grid.set_cell(tile.x, tile.y, SNAKE, false,false,true, Vector2(2,2))
+			else:
+				if previous_tile.x == -1 and next_tile.y == -1 or next_tile.x == -1 and previous_tile.y == -1:
+					$Grid.set_cell(tile.x, tile.y, SNAKE, true,true,false, Vector2(1,0))
+				if previous_tile.x == -1 and next_tile.y == 1 or next_tile.x == -1 and previous_tile.y == 1:
+					$Grid.set_cell(tile.x, tile.y, SNAKE, true,true,false, Vector2(1,1))
+				if previous_tile.x == 1 and next_tile.y == -1 or next_tile.x == 1 and previous_tile.y == -1:
+					$Grid.set_cell(tile.x, tile.y, SNAKE, true,false,true, Vector2(2,1))
+				if previous_tile.x == 1 and next_tile.y == 1 or next_tile.x == 1 and previous_tile.y == 1:
+					$Grid.set_cell(tile.x, tile.y, SNAKE, false,false,false, Vector2(1,0))
+				
 func compare(first_block:Vector2, second_block:Vector2):
 	var block_comparation = first_block - second_block
 	if block_comparation == Vector2(-1, 0):
@@ -106,7 +121,7 @@ func game_over():
 func restart():
 	snake_body = [Vector2(5,9), Vector2(4,9), Vector2(3,9)]
 	snake_direction = Vector2(1,0)
-
+	
 "setup a direction for a snake"
 func _input(event):
 	if Input.is_action_just_pressed("ui_up"):
