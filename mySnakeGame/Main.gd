@@ -111,11 +111,13 @@ func game_over():
 	var head = snake_body[0]
 	# if snake collides the screen bord
 	if head.x > 18 or head.x < 0 or head.y > 18 or head.y < 0:
-		restart()
+		get_tree().change_scene("res://Game Over.tscn")
 	# if snake collides own tail
 	for block in snake_body.slice(1,snake_body.size() - 1):
 		if block == head:
-			restart()
+			get_tree().change_scene("res://Game Over.tscn")
+	if snake_body.size() == 360:
+		get_tree().change_scene("res://Champion Screen.tscn")
 	
 "restart the game"
 func restart():
